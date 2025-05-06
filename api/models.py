@@ -85,14 +85,16 @@ class Resume(models.Model):
 
 
 class Contact(models.Model):
-    name = models.CharField(max_length=100)
+    firstName = models.CharField(max_length=100,null=True)
+    lastName = models.CharField(max_length=100,null=True)
+    phone = models.IntegerField( blank=True, null=True)
     email = models.EmailField()
     subject = models.CharField(max_length=100, blank=True, null=True)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.firstname
 
 
 class Profile(models.Model):
@@ -106,3 +108,13 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.name
+
+class Statstic(models.Model):
+    username = models.CharField(max_length=100, blank=True, null=True)
+    year_of_experience = models.IntegerField(null=True)
+    commits = models.IntegerField(null=True)
+    projects_completed = models.IntegerField(null=True)
+    technologies_mastered = models.IntegerField(null=True)
+    
+    def __str__(self):
+        return self.username

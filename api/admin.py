@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Project, Skill, Category, Experience, Education, Resume, Contact, Profile
+from .models import Project, Skill, Category, Experience,Statstic, Education, Resume, Contact, Profile
 from django.contrib.auth.models import User, Group
-from .services import GitHub
+from .services import GitHub , GitHubAnalyzer
 from django.contrib import messages
 
 # Register your models here.
@@ -47,6 +47,7 @@ class ProjectAdmin(admin.ModelAdmin):
         messages.success(request, "Projects fetched successfully")
 
 
+
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
     list_display = ["title", "company", "start_date", "end_date", "is_current"]
@@ -72,9 +73,9 @@ class ResumeAdmin(admin.ModelAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ["name", "email", "message"]
+    list_display = ["email", "message","lastName","firstName"]
     list_display_links = list_display
-    search_fields = ["name", "email", "message"]
+    search_fields = ["email", "message","lastName","firstName"]
     list_filter = ["created_at"]
 
 @admin.register(Profile)
@@ -83,3 +84,15 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display_links = list_display
     search_fields = ["name", "roles"]
     list_filter = ["roles"]
+
+@admin.register(Statstic)
+class StatsticAdmin(admin.ModelAdmin):
+    list_display = ["username", "year_of_experience", "commits", "projects_completed", "technologies_mastered"]
+    list_display_links = list_display
+    search_fields = ["username"]
+
+    @admin.action(description="Fetch latest Statstic from GitHub")
+    def fetch_Statstic(self, request, queryset):
+        service = GitHubAnalyzer()
+        service.analyze()
+        messages.success(request, "Statstic fetched successfully")

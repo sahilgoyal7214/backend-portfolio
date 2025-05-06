@@ -53,6 +53,7 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 # Application definition
 
 DEFAULT_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -68,7 +69,7 @@ THIRD_PARTY_APPS = [
     "drf_standardized_errors",
     "drf_spectacular",
 ]
-LOCAL_APPS = ['api']
+LOCAL_APPS = ["api"]
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 
@@ -110,7 +111,7 @@ WSGI_APPLICATION = "portfolio.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "db_final.sqlite3",
     }
 }
 
@@ -209,3 +210,32 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     # OTHER SETTINGS
 }
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Portfolio Admin",
+    "site_header": "Portfolio",
+    "site_brand": "Portfolio",
+    "site_logo": None,
+    "login_logo": None,
+    "login_logo_dark": None,
+    "site_logo_classes": "img-circle",
+    "site_icon": None,
+    "welcome_sign": "Welcome to the Portfolio",
+    "copyright": "Portfolio",
+    "topmenu_links": [
+        {"app": "api"},
+        {
+            "name": "Fetch Projects",
+            "url": "/api/fetch-projects/",
+            "icon": "fas fa-download",
+            "permissions": ["auth.view_user"],
+        },
+        {
+            "name": "Fetch Statistics",
+            "url": "/api/fetch-statistics/",
+            "icon": "fas fa-chart-bar",
+            "permissions": ["auth.view_user"],
+        },
+    ],
+}
+

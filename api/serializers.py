@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Project, Skill, Category, Experience, Education,Contact,Resume,Profile
-from .services import GitHub
+from .models import Project, Skill, Category, Experience, Education,Contact,Resume,Profile,Statstic
+from .services import GitHub, GitHubAnalyzer
 
 
 class ProjectSerializer(ModelSerializer):
@@ -87,7 +87,19 @@ class ProfileSerializer(ModelSerializer):
     class Meta:
         model = Profile
         fields = "__all__"
+        depth = 1
 
     def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        return representation
+
+class StatsticSerializer(ModelSerializer):
+    class Meta:
+        model = Statstic
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        # service = GitHubAnalyzer()
+        # service.analyze()
         representation = super().to_representation(instance)
         return representation

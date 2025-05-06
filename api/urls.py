@@ -7,7 +7,11 @@ from .views import (
     EducationViewSet,
     ContactViewSet,
     ResumeViewSet,
-    ProfileViewSet
+    ProfileViewSet,
+    StatsticViewSet,
+    fetch_project, 
+    fetch_Statstic
+
 )
 
 router = DefaultRouter()
@@ -18,7 +22,11 @@ router.register("educations", EducationViewSet)
 router.register("contacts", ContactViewSet)
 router.register("resumes", ResumeViewSet)
 router.register("profiles", ProfileViewSet)
+router.register("Statstic", StatsticViewSet)
+
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("fetch-projects/", fetch_project, name="fetch_projects"),
+    path("fetch-statistics/", fetch_Statstic, name="fetch_statistics"),
 ]

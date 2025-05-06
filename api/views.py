@@ -1,7 +1,18 @@
 from rest_framework.viewsets import ModelViewSet
-from .serializers import ProjectSerializer, CategorySerializer,ExperienceSerializer,EducationSerializer,ContactSerializer,ResumeSerializer,ProfileSerializer
-from .models import Project, Category,Experience,Education,Contact,Resume,Profile
+from django.contrib import messages
+from django.shortcuts import redirect
+from .services import GitHub, GitHubAnalyzer
+from .serializers import ProjectSerializer, CategorySerializer,ExperienceSerializer,EducationSerializer,ContactSerializer,ResumeSerializer,ProfileSerializer,StatsticSerializer
+from .models import Project, Category,Experience,Education,Contact,Resume,Profile,Statstic
+from pathlib import Path
+import environ
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+# Environment Variables
+environ.Env.read_env(BASE_DIR / ".env")
+env = environ.Env(
+    GITHUB_USERNAME=(str, ""),
+)
 
 class ProjectViewSet(ModelViewSet):
     queryset = Project.objects.filter(is_visible=True)
@@ -39,3 +50,23 @@ class ProfileViewSet(ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     http_method_names = ["get"]
+
+class StatsticViewSet(ModelViewSet):
+    queryset = Statstic.objects.all()
+    serializer_class = StatsticSerializer
+    http_method_names = ["get"]
+
+
+def fetch_project(request):
+    if request.user.is_authenticated:
+        GitHub().fetch()
+        messages.success(request, "Projects fetched successfully.")
+        return redirect("/admin/api/project/")
+    return redirect("/admin/")
+
+def fetch_Statstic(request):
+    if request.user.is_authenticated:
+        GitHubAnalyzer().analyze()
+        messages.success(request, "Statistics updated successfully.")
+        return redirect("/admin/api/statstic/")
+    return redirect("/admin/")
