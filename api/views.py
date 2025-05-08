@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from django.contrib import messages
 from django.shortcuts import redirect
 from .services import GitHub, GitHubAnalyzer
-from rest_framework.response import Response
+from django.http import JsonResponse
 from .serializers import ProjectSerializer, CategorySerializer,ExperienceSerializer,EducationSerializer,ContactSerializer,ResumeSerializer,ProfileSerializer,StatsticSerializer
 from .models import Project, Category,Experience,Education,Contact,Resume,Profile,Statstic
 from pathlib import Path
@@ -65,7 +65,7 @@ def fetch_project(request):
         return redirect("/admin/api/project/")
     else :
         GitHub().fetch()
-        return Response({"message": "Projects fetched successfully."})
+        return JsonResponse({"message": "Projects fetched successfully."})
 
 def fetch_Statstic(request):
     if request.user.is_authenticated:
@@ -74,5 +74,5 @@ def fetch_Statstic(request):
         return redirect("/admin/api/statstic/")
     else:
         GitHubAnalyzer().analyze()
-        return Response({"message": "Statistics updated successfully."})
+        return JsonResponse({"message": "Statistics updated successfully."})
     
